@@ -1,20 +1,13 @@
 package zhonglin.test;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.TestCase;
-import junit.framework.TestFailure;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class TestIncreased extends AbstractTestIncreased {
-
-	public static int increaseValue() {
-		value++;
-		return value;
-	}
-
+	
+	private IMethodBody objMethodBody;
+	
 	/**
 	 * 本方法使用了thread.join()，阻塞了当前线程的运行等待子线程完成 但是子线程仍然是没有同时启动运行的
 	 *
@@ -22,6 +15,8 @@ public class TestIncreased extends AbstractTestIncreased {
 	public void testIncreaseValue() {
 		try {
 			this.setUp();
+			objMethodBody = new MethodBodyNormal();
+			objMethodBody.init();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -32,7 +27,7 @@ public class TestIncreased extends AbstractTestIncreased {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					TestIncreased.increaseValue();
+					objMethodBody.increaseValue();
 				}
 			});
 			list.add(thr);
@@ -43,12 +38,11 @@ public class TestIncreased extends AbstractTestIncreased {
 			for (Thread thread : list) {
 				thread.join();
 			}
-			this.assertEquals(THREAD_TOTAL_COUNT, value);
+			this.assertEquals(objMethodBody.getExpectValue(THREAD_TOTAL_COUNT), objMethodBody.getResultValue());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		list.clear();
-		System.out.println(value);
 	}
 
 	/**
@@ -58,6 +52,8 @@ public class TestIncreased extends AbstractTestIncreased {
 	public void testIncreaseValue1() {
 		try {
 			this.setUp();
+			objMethodBody = new MethodBodyNormal();
+			objMethodBody.init();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -65,18 +61,17 @@ public class TestIncreased extends AbstractTestIncreased {
 		CountDownLatch countDownLatch = new CountDownLatch(THREAD_TOTAL_COUNT);
 		for (int i = 0; i < THREAD_TOTAL_COUNT; i++) {
 			TestIncreaseValueThreadNotStartTheSameTime thr = new TestIncreaseValueThreadNotStartTheSameTime(
-					countDownLatch);
+					countDownLatch, objMethodBody);
 			thr.start();
 		}
 
 		try {
 			// 阻塞当前线程，直到倒数计数器倒数到0
 			countDownLatch.await();
-			this.assertEquals(THREAD_TOTAL_COUNT, value);
+			this.assertEquals(objMethodBody.getExpectValue(THREAD_TOTAL_COUNT), objMethodBody.getResultValue());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(value);
 	}
 
 	/**
@@ -85,58 +80,141 @@ public class TestIncreased extends AbstractTestIncreased {
 	public void testIncreaseValue2() {
 		try {
 			this.setUp();
+			objMethodBody = new MethodBodyNormal();
+			objMethodBody.init();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		CountDownLatch countDownLatch = new CountDownLatch(THREAD_TOTAL_COUNT);
 		for (int i = 0; i < THREAD_TOTAL_COUNT; i++) {
-			TestIncreaseValueThreadWithAllTheThreadStartTheSameTime thr = new TestIncreaseValueThreadWithAllTheThreadStartTheSameTime(
-					countDownLatch);
+			TestIncreaseValueThreadStartTheSameTime thr = new TestIncreaseValueThreadStartTheSameTime(
+					countDownLatch, objMethodBody);
 			thr.start();
 		}
 		try {
 			// 等待所有的线程都运行完成
 			countDownLatch.await();
-			this.assertEquals(THREAD_TOTAL_COUNT, value);
+			this.assertEquals(objMethodBody.getExpectValue(THREAD_TOTAL_COUNT), objMethodBody.getResultValue());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 在内部使用循环 更容易测试出并发错误
+	 */
+	public void testIncreaseValue3() {
+		try {
+			this.setUp();
+			objMethodBody = new MethodBodyIncreaseCount();
+			objMethodBody.init();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		CountDownLatch countDownLatch = new CountDownLatch(THREAD_TOTAL_COUNT);
+		for (int i = 0; i < THREAD_TOTAL_COUNT; i++) {
+			TestIncreaseValueThreadStartTheSameTime thr = new TestIncreaseValueThreadStartTheSameTime(
+					countDownLatch, objMethodBody);
+			thr.start();
+		}
+		try {
+			// 等待所有的线程都运行完成
+			countDownLatch.await();
+			this.assertEquals(objMethodBody.getExpectValue(THREAD_TOTAL_COUNT), objMethodBody.getResultValue());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	
+	public void testIncreaseValue4() {
+		try {
+			this.setUp();
+			objMethodBody = new MethodBodyVolatile();
+			objMethodBody.init();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		CountDownLatch countDownLatch = new CountDownLatch(THREAD_TOTAL_COUNT);
+		for (int i = 0; i < THREAD_TOTAL_COUNT; i++) {
+			TestIncreaseValueThreadStartTheSameTime thr = new TestIncreaseValueThreadStartTheSameTime(
+					countDownLatch, objMethodBody);
+			thr.start();
+		}
+		try {
+			// 等待所有的线程都运行完成
+			countDownLatch.await();
+			this.assertEquals(objMethodBody.getExpectValue(THREAD_TOTAL_COUNT), objMethodBody.getResultValue());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
+
+	public void testIncreaseValue5() {
+		try {
+			this.setUp();
+			objMethodBody = new MethodSynchronize();
+			objMethodBody.init();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		CountDownLatch countDownLatch = new CountDownLatch(THREAD_TOTAL_COUNT);
+		for (int i = 0; i < THREAD_TOTAL_COUNT; i++) {
+			TestIncreaseValueThreadStartTheSameTime thr = new TestIncreaseValueThreadStartTheSameTime(
+					countDownLatch, objMethodBody);
+			thr.start();
+		}
+		try {
+			// 等待所有的线程都运行完成
+			countDownLatch.await();
+			this.assertEquals(objMethodBody.getExpectValue(THREAD_TOTAL_COUNT), objMethodBody.getResultValue());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
 	public static class TestIncreaseValueThreadNotStartTheSameTime extends
 			Thread {
 
 		private CountDownLatch countDownLatch;
+		private IMethodBody objMethodBody;
 
 		public TestIncreaseValueThreadNotStartTheSameTime(
-				CountDownLatch countDownLatch) {
+				CountDownLatch countDownLatch, IMethodBody objMethodBody) {
 			// TODO Auto-generated constructor stub
 			this.countDownLatch = countDownLatch;
+			this.objMethodBody = objMethodBody;
 		}
 
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			super.run();
-			TestIncreased.increaseValue();
+			objMethodBody.increaseValue();
 			countDownLatch.countDown();
 		}
 
 	}
 
-	public static class TestIncreaseValueThreadWithAllTheThreadStartTheSameTime
+	public static class TestIncreaseValueThreadStartTheSameTime
 			extends Thread {
 
 		private CountDownLatch countDownLatch;
+		private IMethodBody objMethodBody;
 
-		public TestIncreaseValueThreadWithAllTheThreadStartTheSameTime(
-				CountDownLatch countDownLatch) {
+		public TestIncreaseValueThreadStartTheSameTime(
+				CountDownLatch countDownLatch, IMethodBody objMethodBody) {
 			// TODO Auto-generated constructor stub
 			this.countDownLatch = countDownLatch;
+			this.objMethodBody = objMethodBody;
 		}
 
 		@Override
@@ -151,7 +229,7 @@ public class TestIncreased extends AbstractTestIncreased {
 				AbstractTestIncreased.countTheCountdown();
 				AbstractTestIncreased.getTheCountdown().await();
 				AbstractTestIncreased.printString("starting to increase");
-				TestIncreased.increaseValue();
+				objMethodBody.increaseValue();
 				this.countDownLatch.countDown();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
