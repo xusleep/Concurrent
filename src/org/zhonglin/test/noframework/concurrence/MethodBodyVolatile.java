@@ -1,4 +1,4 @@
-package zhonglin.test;
+package zhonglin.test.noframework.concurrence;
 
 public class MethodBodyVolatile implements IMethodBody{
 	public static volatile int value_volatile = 0;

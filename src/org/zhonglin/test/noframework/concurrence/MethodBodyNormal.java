@@ -1,4 +1,4 @@
-package zhonglin.test;
+package zhonglin.test.noframework.concurrence;
 
 public class MethodBodyNormal implements IMethodBody{
 	public static int value = 0;

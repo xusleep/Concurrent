@@ -1,4 +1,4 @@
-package zhonglin.test;
+package zhonglin.test.noframework.concurrence;
 
 import java.util.concurrent.CountDownLatch;
 

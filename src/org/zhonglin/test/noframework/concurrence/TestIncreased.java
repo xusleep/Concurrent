@@ -1,4 +1,4 @@
-package zhonglin.test;
+package zhonglin.test.noframework.concurrence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +76,7 @@ public class TestIncreased extends AbstractTestIncreased {
 
 	/**
 	 * 本例使用了两个countdown保证，所有的线程在同一个时刻触发
+	 * 使用此法，出来的并发碰撞率很高，后面将继续使用此法
 	 */
 	public void testIncreaseValue2() {
 		try {
@@ -101,8 +102,9 @@ public class TestIncreased extends AbstractTestIncreased {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
-	 * 在内部使用循环 更容易测试出并发错误
+	 * 在内部使用循环 更容易测试出并发错误， 在外部使用线程同一时刻触发的机制，同一时间发起测试
 	 */
 	public void testIncreaseValue3() {
 		try {
@@ -154,7 +156,10 @@ public class TestIncreased extends AbstractTestIncreased {
 		}
 
 	}
-
+	
+	/**
+	 * 内部使用了同步机制，因此不会出现并发的问题
+	 */
 	public void testIncreaseValue5() {
 		try {
 			this.setUp();

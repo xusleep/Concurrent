@@ -1,4 +1,4 @@
-package zhonglin.test;
+package zhonglin.test.noframework.concurrence;
 
 public class MethodBodyIncreaseCount implements IMethodBody {
 	public static final int INCREASE_COUNT = 100;

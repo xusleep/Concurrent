@@ -1,4 +1,4 @@
-package zhonglin.test;
+package zhonglin.test.noframework.concurrence;
 
 public class MethodSynchronize implements IMethodBody {
 
