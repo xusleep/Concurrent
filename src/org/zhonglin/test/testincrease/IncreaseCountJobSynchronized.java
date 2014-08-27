@@ -1,8 +1,8 @@
 package zhonglin.test.testincrease;
 
-import zhonglin.test.framework.concurrence.job.JobInterface;
+import zhonglin.test.framework.concurrence.condition.job.AbstractJob;
 
-public class IncreaseCountJobSynchronized implements JobInterface, IncreaseCountJobInterface{
+public class IncreaseCountJobSynchronized extends AbstractIncreaseCountJob {
 	public int increateCount;
 	public int value;
 	

@@ -11,9 +11,11 @@ import junit.framework.TestResult;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import zhonglin.test.chapter3.share.SychornizedTestCase;
 import zhonglin.test.framework.printer.HTMLResultPrinter;
 import zhonglin.test.framework.summary.SummaryTestResult;
 import zhonglin.test.testincrease.IncreaseCountTestCase;
+import zhonglin.test.chapter3.safepublish.SafePublishTestCase;
 
 //This section declares all of the test classes in your program.
 @RunWith(Suite.class)
@@ -21,10 +23,14 @@ import zhonglin.test.testincrease.IncreaseCountTestCase;
 // TestIncreased.class, // Add test classes here.
 // TestIncreased3.class,
 // TestIncreased4.class,
-	IncreaseCountTestCase.class })
+//	SychornizedTestCase.class,
+//	SafePublishTestCase.class,
+	//SychornizedTestCase.class
+	SafePublishTestCase.class
+	})
 public class RunAllTests {
 
-	private static final int REPEAT_TIMES = 10000;
+	private static final int REPEAT_TIMES = 1000;
 	// The suite() method is helpful when using JUnit 3 Test Runners or Ant.
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(RunAllTests.class);

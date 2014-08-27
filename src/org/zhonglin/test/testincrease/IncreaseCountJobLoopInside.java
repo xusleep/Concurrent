@@ -1,19 +1,12 @@
 package zhonglin.test.testincrease;
 
-import zhonglin.test.framework.concurrence.job.JobInterface;
-
-public class IncreaseCountJobLoopInside implements JobInterface, IncreaseCountJobInterface{
+public class IncreaseCountJobLoopInside extends AbstractIncreaseCountJob
+{
 	public int increateCount;
 	public int value;
 	
 	public IncreaseCountJobLoopInside()
 	{
-		init();
-	}
-	
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
 		value = 0;
 		increateCount = 0;
 	}
@@ -53,4 +46,9 @@ public class IncreaseCountJobLoopInside implements JobInterface, IncreaseCountJo
 		
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }

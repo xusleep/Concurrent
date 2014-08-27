@@ -1,19 +1,15 @@
-package zhonglin.test.framework.concurrence;
+package zhonglin.test.framework.concurrence.condition;
+
+import zhonglin.test.framework.concurrence.condition.job.JobInterface;
 
 public class ConcurrentThread extends Thread{
-	private MainConcurrentStarter mainThread;
+	private MainConcurrentThread mainThread;
+	private JobInterface job;
 	
-	public MainConcurrentStarter getMainThread() {
-		return mainThread;
-	}
-
-	public void setMainThread(MainConcurrentStarter mainThread) {
-		this.mainThread = mainThread;
-	}
-
-	public ConcurrentThread(MainConcurrentStarter mainThread)
+	public ConcurrentThread(MainConcurrentThread mainThread, JobInterface job)
 	{
 		this.mainThread = mainThread;
+		this.job = job;
 	}
 
 	@Override
@@ -26,14 +22,20 @@ public class ConcurrentThread extends Thread{
 			//计数减一，证明已经有一个线程准备好了，然后再等待其他线程的准备完成
 			this.getMainThread().countDownConcurrentThreadLatch();
 			this.getMainThread().awaitCountDownConcurrentThreadLatch();
-			if(this.getMainThread().getJob() != null)
+			if(this.job != null)
 			{
-				this.getMainThread().getJob().doConcurrentJob();
+				this.job.doConcurrentJob();
 			}
 			//计数减一，证明已经有一个线程完成了job
 			this.getMainThread().countDownMainConcurrentLatch();
 		}
 	}
 	
-	
+	public MainConcurrentThread getMainThread() {
+		return mainThread;
+	}
+
+	public void setMainThread(MainConcurrentThread mainThread) {
+		this.mainThread = mainThread;
+	}
 }

@@ -80,19 +80,6 @@ public class MyTestRunner extends BaseTestRunner{
 		}
 	}
 
-	public static void main(String[] args) {
-		MyTestRunner aTestRunner = new MyTestRunner();
-		try {
-			TestResult r = aTestRunner.start(args);
-			if (!r.wasSuccessful())
-				System.exit(1);
-			System.exit(0);
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			System.exit(2);
-		}
-	}
-
 	protected TestResult start(String[] args) throws Exception {
 		String testCase = "";
 		boolean wait = false;

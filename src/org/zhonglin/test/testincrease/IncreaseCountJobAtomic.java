@@ -2,9 +2,7 @@ package zhonglin.test.testincrease;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import zhonglin.test.framework.concurrence.job.JobInterface;
-
-public class IncreaseCountJobAtomic implements JobInterface, IncreaseCountJobInterface{
+public class IncreaseCountJobAtomic extends AbstractIncreaseCountJob {
 	public int increateCount;
 	public AtomicInteger value;
 	
@@ -54,5 +52,4 @@ public class IncreaseCountJobAtomic implements JobInterface, IncreaseCountJobInt
 		// TODO Auto-generated method stub
 		
 	}
-
 }
