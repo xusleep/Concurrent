@@ -6,7 +6,15 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LogService {
+/**
+ * 这个程序将发生无法结束的问题，
+ * 由于producer结束的太快，线程都还没有走到call方法里面去执行任务就已经被取消了
+ * 所以comsume，无法结束，因为在produce程序中是要等到中断到达的时候才会中断程序
+ * 因此将无法中断comsume，而consumer一直处于阻塞当中，因此程序将一直执行下去。
+ * @author zhonxu
+ *
+ */
+public class LogServiceError {
 	
 	private final CancellingEncapsulationExecutor logExecutor;
 	private final BlockingQueue<String> msgQueue;
@@ -15,8 +23,8 @@ public class LogService {
 	private FutureTask consumer;
 	private FutureTask producer;
 	
-	public LogService(){
-		logExecutor = new CancellingEncapsulationExecutor(100);
+	public LogServiceError(){
+		logExecutor = new CancellingEncapsulationExecutor(1);
 		msgQueue = new LinkedBlockingQueue<String>(1);
 		isShutdown = false;
 		reservations = new AtomicInteger(0);
@@ -30,6 +38,7 @@ public class LogService {
 	
 	public void stop(){
 		producer.cancel(true);
+		//consumer.cancel(true);
 		logExecutor.shutdown();
 	}
 	
@@ -43,11 +52,14 @@ public class LogService {
 
 			@Override
 			public Object call() throws Exception {
+				System.out.println("produceLog start ");
 				try
 				{
+					System.out.println("for");
 					int j = 0;
 					for(int i = 0; i < 100000; i++)
 					{
+
 						if(!isShutdown)
 						{
 							msgQueue.put("ddfsd " + i);
@@ -64,6 +76,7 @@ public class LogService {
 					//允许退出线程，不做任何事情
 					//退出线程，并设置标识位表示停止生产了
 					setShutdown(true);
+					System.out.println("test 1");
 					//停止消费者
 					consumer.cancel(true);
 				}
@@ -86,6 +99,7 @@ public class LogService {
 
 			@Override
 			public Object call() throws Exception {
+					System.out.println("consumeLog start ");
 					while(true)
 					{
 						try
@@ -93,6 +107,7 @@ public class LogService {
 							if(isShutdown && (reservations.get() == 0)){
 								break;
 							}
+							System.out.println("consumeLog start 1");
 							String msg = msgQueue.take();
 							reservations.decrementAndGet();
 							Thread.sleep(100);
@@ -119,16 +134,16 @@ public class LogService {
 	}
 	
 	public static void main(String[] args){
-		try {
-			LogService objLogService = new LogService();
+//		try {
+			LogServiceError objLogService = new LogServiceError();
 			objLogService.start();
-			Random r = new Random();
-			Thread.sleep(r.nextInt(1) * 1000);
+//			Random r = new Random();
+//			Thread.sleep(r.nextInt(1) * 1000);
 			objLogService.stop();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 }
