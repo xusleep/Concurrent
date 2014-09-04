@@ -19,15 +19,14 @@ public class ConcurrentThread extends Thread{
 		
 		if(this.getMainThread() != null)
 		{
-			//计数减一，证明已经有一个线程准备好了，然后再等待其他线程的准备完成
-			this.getMainThread().countDownConcurrentThreadLatch();
-			this.getMainThread().awaitCountDownConcurrentThreadLatch();
+			//等待启动信号完成，在前面如果 countdown后，这里将继续执行下去
+			this.getMainThread().awaitStartSignal();
 			if(this.job != null)
 			{
 				this.job.doConcurrentJob();
 			}
 			//计数减一，证明已经有一个线程完成了job
-			this.getMainThread().countDownMainConcurrentLatch();
+			this.getMainThread().countDownDoneSignal();
 		}
 	}
 	

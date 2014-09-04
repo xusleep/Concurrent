@@ -1,9 +1,14 @@
 package zhonglin.test.framework.concurrence.condition;
 
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import zhonglin.test.framework.concurrence.condition.job.JobInterface;
 import zhonglin.test.framework.concurrence.condition.job.TestJob;
@@ -16,16 +21,23 @@ import zhonglin.test.framework.concurrence.condition.job.TestJob;
  * @author Smile
  *
  */
-public class MainConcurrentThread extends Thread {
+public class MainConcurrentExecutor extends Thread {
 	//所以任务完成的信号
 	private CountDownLatch doneSignal;
 	//同时启动所有任务的信号
 	private CountDownLatch startSignal;
 	private List<JobInterface> jobList;
+	private final ExecutorService executor;
 	
-	public MainConcurrentThread(List<JobInterface> jobList)
+	public MainConcurrentExecutor(List<JobInterface> jobList)
+	{
+		this(jobList, Executors.newFixedThreadPool(1000));
+	}
+	
+	public MainConcurrentExecutor(List<JobInterface> jobList, ExecutorService executor)
 	{ 
 		this.jobList = jobList;
+		this.executor = executor;
 		init();
 	}
 	
@@ -76,7 +88,7 @@ public class MainConcurrentThread extends Thread {
 			//启动所有的线程
 			for(int j = 0; j < jobThreadCount; j++)
 			{
-				Thread thr = new Thread(){
+				Runnable task = new Runnable(){
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
@@ -87,7 +99,7 @@ public class MainConcurrentThread extends Thread {
 							countDownDoneSignal();
 						}
 					};
-				thr.start();
+				this.executor.execute(task);
 			}
 		}
 		
@@ -102,6 +114,8 @@ public class MainConcurrentThread extends Thread {
 			//运行完job后，先运行一些后续任务
 			job.doAfterJob();
 		}
+		//执行完后回收服务
+		this.executor.shutdown();
 	}
 
 	/**
@@ -155,56 +169,17 @@ public class MainConcurrentThread extends Thread {
 		}
 	}
 	public static void main(String[] args) {
-//		TestJob job1 = new TestJob(1);
-//		job1.setThreadCount(1);
-//		TestJob job2 = new TestJob(2);
-//		job2.setThreadCount(10);
-//		List<JobInterface> jobList = new LinkedList<JobInterface>();
-//		jobList.add(job1);
-//		jobList.add(job2);
-//		MainConcurrentThread ct = new MainConcurrentThread(jobList);
-//		ct.start();
-//		AtomicInteger t = new AtomicInteger(10);
+		TestJob job1 = new TestJob(1);
+		job1.setThreadCount(1);
+		TestJob job2 = new TestJob(2);
+		job2.setThreadCount(10);
+		List<JobInterface> jobList = new LinkedList<JobInterface>();
+		jobList.add(job1);
+		jobList.add(job2);
+		//MainConcurrentExecutor ct = new MainConcurrentExecutor(jobList, new ThreadPerTaskExecutor());
+		MainConcurrentExecutor ct = new MainConcurrentExecutor(jobList);
+		ct.start();
+		//BlockingQueue<BigInteger> bq = new ArrayBlockingQueue<BigInteger>();
 		
-		Thread t1 = new Thread(){
-
-			@Override
-			public void run() {
-					int sum = 1000;
-					for(int j = 0; j < 10; j++)
-					{
-						if(Thread.interrupted())
-						{
-							break;
-						}
-						// TODO Auto-generated method stub
-						for(int i = 0; i < 1000000000; i++)
-						{
-							for(int l = 0; l < 1000000000; l++)
-							{
-								sum += 2;
-								
-							}
-						}
-						System.out.println(sum);
-					}
-			}
-			
-			
-		};
-		t1.start();
-		System.out.println("test 112");
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		t1.interrupt();
-		System.out.println("test 112");
-		if(t1.interrupted())
-		{
-			System.out.println("test");
-		}
 	}
 }
