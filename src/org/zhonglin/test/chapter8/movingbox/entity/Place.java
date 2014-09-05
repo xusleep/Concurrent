@@ -93,7 +93,7 @@ public class Place implements PlaceInterface {
 		return this.entity != null;
 	}
 	
-	public 	List<Place> getNeibough()
+	public 	List<Place> getNeighbor()
 	{
 		List<Place> list = new LinkedList<Place>();
 		if(this.left != null)

@@ -16,6 +16,15 @@ public class Position {
 	public int getY() {
 		return y;
 	}
+	
+	
+
+	@Override
+	public boolean equals(Object arg0) {
+		// TODO Auto-generated method stub
+		return (((Position)arg0).x == this.x && ((Position)arg0).y == this.y);
+		
+	}
 
 	@Override
 	public String toString() {

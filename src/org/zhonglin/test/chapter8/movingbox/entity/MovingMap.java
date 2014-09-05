@@ -47,67 +47,22 @@ public class MovingMap {
 				}
 			}	
 		}
-		createRoad();
+		List<PlaceInterface> list = new LinkedList<PlaceInterface>();
+		createRoad(placeArray[0][0], list);
 	}
 	
-	public void createRoad()
+	public boolean createRoad(PlaceInterface p, List<PlaceInterface> list)
 	{
-		int k = 100;
-		Random getTo = new Random();
-		while(k > 0)
+		List<Place> nei = p.getNeighbor();
+		if(nei.size() == 0)
 		{
-			k--;
-			int count = 100;
-			this.road.clear();
-			int i = 0; 
-			int j = 0;
-			while(true){
-				int tmpi = i;
-				int tmpj = j;
-				if ( i == 9 && j == 9)
-					break;
-				List<Place> ps = this.placeArray[i][j].getNeibough();
-				int p = getTo.nextInt(ps.size());
-				if(p == 0)
-				{
-					if(i == 9)
-						continue;
-					i++;
-				}
-				else if(p == 3)
-				{
-					if(i == 0)
-						continue;
-					i--;
-				}
-				else if(p == 1)
-				{
-					if(j == 9)
-						continue;
-					j++;
-				}
-				else if(p == 2)
-				{
-					if(j == 0)
-						continue;
-					j--;
-				}
-				Position newP = new Position(i, j);
-				System.out.println(newP);
-				if(this.containsInRoad(newP))
-				{
-					i = tmpi;
-					j = tmpj;
-					if(count-- <= 0)
-						break;
-					continue;
-				}
-				placeArray[i][j].placeEntity(new BlockEntity());
-				this.road.add(newP);
-			}
-			if(count >= 0 )
-				break;
+			return true;
 		}
+		if(p.getUp() != null){
+			list.add(p);
+			return createRoad(p.getUp(), list);
+		}
+		return false;
 	}
 	
 	

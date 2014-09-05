@@ -22,5 +22,5 @@ public interface PlaceInterface {
 	public Position getPosition();
 	public void setPosition(Position position);
 	
-	public 	List<Place> getNeibough();
+	public 	List<Place> getNeighbor();
 }
