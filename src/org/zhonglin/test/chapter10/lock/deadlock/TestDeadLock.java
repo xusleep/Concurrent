@@ -3,8 +3,8 @@ package zhonglin.test.chapter10.lock.deadlock;
 import java.util.LinkedList;
 import java.util.List;
 
-import zhonglin.test.chapter10.deadlock.job.AccountJob1;
-import zhonglin.test.chapter10.deadlock.job.AccountJob2;
+import zhonglin.test.chapter10.lock.deadlock.job.AccountJob1;
+import zhonglin.test.chapter10.lock.deadlock.job.AccountJob2;
 import zhonglin.test.framework.concurrence.condition.MainConcurrentThread;
 import zhonglin.test.framework.concurrence.condition.job.JobInterface;
 

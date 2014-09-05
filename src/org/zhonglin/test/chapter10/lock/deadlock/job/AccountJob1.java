@@ -1,4 +1,4 @@
-package zhonglin.test.chapter10.deadlock.job;
+package zhonglin.test.chapter10.lock.deadlock.job;
 
 import zhonglin.test.chapter10.lock.deadlock.ShareingData;
 import zhonglin.test.framework.concurrence.condition.job.AbstractJob;
