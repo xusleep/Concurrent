@@ -1,13 +1,13 @@
 package zhonglin.test.chapter10.lock.deadlock.job;
 
-import zhonglin.test.chapter10.lock.deadlock.ShareingData;
+import zhonglin.test.chapter10.lock.deadlock.ShareingDataInterface;
 import zhonglin.test.framework.concurrence.condition.job.AbstractJob;
 
 public class AccountJob1 extends AbstractJob {
 	
-	private ShareingData objClassUsedSynchronized;
+	private ShareingDataInterface objClassUsedSynchronized;
 	
-	public AccountJob1(ShareingData objClassUsedSynchronized)
+	public AccountJob1(ShareingDataInterface objClassUsedSynchronized)
 	{
 		this.objClassUsedSynchronized = objClassUsedSynchronized;
 	}

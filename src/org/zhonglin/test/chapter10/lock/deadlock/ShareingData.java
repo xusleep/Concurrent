@@ -1,7 +1,7 @@
 package zhonglin.test.chapter10.lock.deadlock;
 
 
-public class ShareingData {
+public class ShareingData implements ShareingDataInterface{
 	private Account fromAcct = new Account(2000);
 	private Account toAcct = new Account(2000);
 	
