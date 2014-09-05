@@ -17,12 +17,12 @@ public class TestDeadLock {
 	{
 		AccountJob2 job2 = new AccountJob2(obj);
 		AccountJob1 job1 = new AccountJob1(obj);
-		job1.setThreadCount(10000);
-		job2.setThreadCount(10000);
+		job1.setThreadCount(10);
+		job2.setThreadCount(10);
 		List<JobInterface> jobList = new LinkedList<JobInterface>();
 		jobList.add(job1);
 		jobList.add(job2);
-		MainConcurrentThread mct1 = new MainConcurrentThread(jobList);
+		MainConcurrentThread mct1 = new MainConcurrentThread(jobList, true);
 		mct1.start();
 		try {
 			mct1.join();
@@ -46,6 +46,6 @@ public class TestDeadLock {
 	}
 	
 	public static void main(String[] agrs){
-		TestDeadLock.test2();
+		TestDeadLock.test1();
 	}
 }

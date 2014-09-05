@@ -3,8 +3,9 @@ package zhonglin.test.framework.concurrence.condition;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import zhonglin.test.framework.concurrence.condition.job.JobInterface;
 import zhonglin.test.framework.concurrence.condition.job.TestJob;
 
@@ -22,11 +23,17 @@ public class MainConcurrentThread extends Thread {
 	//同时启动所有任务的信号
 	private CountDownLatch startSignal;
 	private List<JobInterface> jobList;
+	private boolean deadMonitorCheck;
+	
+	public MainConcurrentThread(List<JobInterface> jobList, boolean deadMonitorCheck){
+		this.jobList = jobList;
+		init();
+		this.deadMonitorCheck = deadMonitorCheck;
+	}
 	
 	public MainConcurrentThread(List<JobInterface> jobList)
 	{ 
-		this.jobList = jobList;
-		init();
+		this(jobList, false);
 	}
 	
 	/**
@@ -60,6 +67,10 @@ public class MainConcurrentThread extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		init();
+		
+		if(this.deadMonitorCheck){
+			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new FindMonitorRunnable(), 0, 1, TimeUnit.SECONDS);
+		}
 		
 		int countJobs = jobList.size();
 		for(int i = 0; i < countJobs; i++)
