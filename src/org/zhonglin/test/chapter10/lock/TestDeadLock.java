@@ -17,8 +17,8 @@ public class TestDeadLock {
 	{
 		AccountJob2 job2 = new AccountJob2(obj);
 		AccountJob1 job1 = new AccountJob1(obj);
-		job1.setThreadCount(10);
-		job2.setThreadCount(10);
+		job1.setThreadCount(10000);
+		job2.setThreadCount(10000);
 		List<JobInterface> jobList = new LinkedList<JobInterface>();
 		jobList.add(job1);
 		jobList.add(job2);
