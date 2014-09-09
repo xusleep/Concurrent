@@ -5,7 +5,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AtomicIntRandom {
 	
-	private final AtomicInteger seed = new AtomicInteger(10);
+	private final AtomicInteger seed ;
+	
+	public AtomicIntRandom(int s){
+		seed = new AtomicInteger(s);
+	}
 	
 	public int nextInt(int n) {
 		while(true)
@@ -27,7 +31,7 @@ public class AtomicIntRandom {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		final AtomicIntRandom air = new AtomicIntRandom();
+		final AtomicIntRandom air = new AtomicIntRandom(100);
 		for(int i = 10; i < 20; i++)
 		{
 			final int value = i;
