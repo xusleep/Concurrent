@@ -1,4 +1,4 @@
-package zhonglin.tes.chapter14.aqs;
+package zhonglin.test.chapter14.aqs;
 
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 /**
