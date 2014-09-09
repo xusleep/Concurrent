@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import zhonglin.test.framework.concurrence.condition.job.JobInterface;
 import zhonglin.test.framework.concurrence.condition.job.TestJob;
 
@@ -67,9 +69,10 @@ public class MainConcurrentThread extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		init();
-		
+		ScheduledExecutorService executor = null;
 		if(this.deadMonitorCheck){
-			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new FindMonitorRunnable(), 0, 1, TimeUnit.SECONDS);
+			executor = Executors.newScheduledThreadPool(1);
+			executor.scheduleAtFixedRate(new FindMonitorRunnable(), 0, 1, TimeUnit.SECONDS);
 		}
 		
 		int countJobs = jobList.size();
@@ -112,6 +115,9 @@ public class MainConcurrentThread extends Thread {
 			JobInterface job = jobList.get(i);
 			//运行完job后，先运行一些后续任务
 			job.doAfterJob();
+		}
+		if(this.deadMonitorCheck){
+			executor.shutdownNow();
 		}
 	}
 
