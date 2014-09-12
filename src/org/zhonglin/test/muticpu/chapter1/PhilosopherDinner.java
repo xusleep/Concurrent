@@ -1,8 +1,10 @@
 package zhonglin.test.muticpu.chapter1;
 
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 哲学家用餐问题解答
@@ -10,6 +12,7 @@ import java.util.Random;
  *
  */
 public class PhilosopherDinner {
+	public static ConcurrentHashMap msg = new ConcurrentHashMap();
 	
 	private NodeList list = new NodeList();
 	
@@ -66,5 +69,16 @@ public class PhilosopherDinner {
 			value = r.nextInt(6);
 		}
 		return "" + value;
+	}
+	
+	public static void printString()
+	{
+		System.out.println("============================================");
+		Enumeration e = PhilosopherDinner.msg.keys();
+		while(e.hasMoreElements())
+		{
+			System.out.println(PhilosopherDinner.msg.get(e.nextElement()));
+		}
+		System.out.println("============================================");
 	}
 }
