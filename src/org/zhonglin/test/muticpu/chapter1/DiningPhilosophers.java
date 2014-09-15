@@ -1,7 +1,12 @@
 package zhonglin.test.muticpu.chapter1;
 
 import java.util.concurrent.Semaphore;
-
+/**
+ *  此方法有个缺点，就是同一个时间内只有一个科学家在吃饭，其中使用了互斥mutex量
+ *  效率不高
+ * @author zhonxu
+ *
+ */
 public class DiningPhilosophers {
   // Number of philosophers
   final static int n = 5;
