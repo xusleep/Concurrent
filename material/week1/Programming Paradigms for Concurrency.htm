@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en_GB" lang="en_GB"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" media="screen" href="Programming%20Paradigms%20for%20Concurrency_files/style.css">
+  <title>Programming Paradigms for Concurrency</title>
+  <meta name="revisit-after" content="7 days">
+  <meta name="language" content="en">
+  <meta name="Robots" content="index, follow">
+  <meta name="author" content="Thomas Wies">
+</head>
+<body style="background:#ffffff">
+  <div id="top"><div class="inner" style="text-align:left;margin-left:10px"></div>
+    <h1>Programming Paradigms for Concurrency</h1>
+    <h2>CSCI-GA 3033-014</h2>
+    <h2>NYU, Graduate Division, Computer Science Course - Spring 2014</h2><h2>
+  </h2></div>
+  <div id="main">
+    <div id="content" style="width:776px;border-left:2px solid
+    white;height:100%">
+      <div id="content-inner" style="padding: 10px 16px;">
+	<h1>Information</h1>
+        
+	<table style="margin-bottom:1ex">	
+	<tbody><tr>
+	  <td width="150"><b>Class Meetings</b></td><td>Mon 5:10-7:00pm in CIWW 317</td>
+	</tr>
+	<tr>
+	  <td width="150"><b>First Lecture</b></td><td>Jan 27, 2014</td>
+	</tr>
+        <tr>
+	  <td width="150"><b>Last Lecture</b></td><td>May 12, 2014</td>
+	</tr>
+	<tr>
+	  <td width="150"><b>Final Exam</b></td><td>May 16, 2014,
+	  5:10-7:00pm in CIWW 317</td>
+	</tr>
+	<tr>
+	  <td width="150"><b>Instructor</b></td><td><a href="http://cs.nyu.edu/wies">Thomas Wies</a></td>
+	</tr>
+	<tr>
+	  <td width="150"><b>Office</b></td><td>CIWW 407</td>
+	</tr>
+	<tr>
+	  <td width="150"><b>Office Hours</b></td><td>Tue 3:00-4:00pm, or by appointment.</td>
+	</tr>
+	</tbody></table>
+
+	<h1>Overview</h1>
+
+	<p class="bodytext">
+          The spread of multicore architectures has a pervasive effect
+        on how we develop software. In this course, we focus on
+        programming techniques for modern multicore machines. We will
+        explore how to write programs using major paradigms for
+        managing concurrency and how to reason about the correctness
+        and performance of such programs.  Topics include
+        multiprocessor architecture, mutual exclusion, wait-free and
+        lock-free synchronization, load balancing, concurrent data
+        structures, transactional memories, and message passing. The
+        course will involve extensive programming exercises in Java
+        and related languages.
+	</p>
+
+ 	<h1>Prerequisites</h1>
+
+	<p class="bodytext">
+	Participants should have previously taken the course
+        Programming Languages (CSCI-GA 2110).  This course will be
+        open to MS and PhD students.
+	</p>
+
+	<h1>Course Material</h1>
+
+        <h2>Required Reading</h2>
+        
+	<ul>
+	  <li><a href="https://www.elsevier.com/books/the-art-of-multiprocessor-programming-revised-reprint/herlihy/978-0-12-397337-5">
+	  The Art of Multiprocessor Programming, Revised Reprint</a>
+	  by Maurice Herlihy and Nir Shavit, Morgan Kaufmann, 2012</li>
+	</ul>
+
+        <h2>Recommended Reading</h2>
+
+	<ul>
+	  <li><a href="http://www.artima.com/shop/programming_in_scala_2ed">Programming
+	  in Scala, Second Edition</a>
+	  by Martin Odersky, Lex Spoon and Bill Venners, Artima, 2010</li>
+	</ul>
+
+        <h2>Scala Resources</h2>
+
+	<ul>
+	  <li><a href="http://www.scala-lang.org/">Official Scala web site</a>
+	  </li><li><a href="http://www.scala-lang.org/api/current/index.html#package">Scala
+	  Standard Library</a></li>
+          <li><a href="http://nbronson.github.io/scala-stm/">Scala
+          STM library</a></li>
+          <li><a href="http://akka.io/">Akka library</a></li>
+	</ul>
+
+	<h2>Syllabus</h2>
+
+	<table style="margin-bottom:1ex">
+	  <tbody><tr>
+	    <th style="background-color:#C1C1D9" width="44">Week</th>
+	    <th style="background-color:#C1C1D9" width="44">Date</th>
+	    <th style="background-color:#C1C1D9" width="310">Topics</th>
+	    <th style="background-color:#C1C1D9" width="300">Materials and Homework</th>
+	  </tr>
+	  <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">1</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">01/27</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Introduction, Mutual Exclusion,
+	    Producer/Consumer, Readers/Writers, Amdahl's Law</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture01.pdf">Slides</a>;
+	    Read Ch. 1 and App. A.2 of
+	    AMP; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw01.pdf">Homework 1</a>;
+            Sample
+	    solution: <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/DiningPhilosophersSimple.java">Part
+	    1 (starving)</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/DiningPhilosophers.java">Part
+	    1 (nonstarving)</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw01.pdf">Part 2,3</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">2</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">02/03</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Mutual Exclusion: Peterson's Algorithm,
+	    Filter Algorithm,
+	    Bakery Algorithm, Impossibility</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture02.pdf">Slides</a>;
+	    Read Ch. 2 of AMP;  <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw02.pdf">Homework
+	    2</a>;  <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw02.pdf">Sample
+	    solution</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">3</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">02/10</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Concurrent Objects: Linearizability,
+	    Sequential Consistency, Progress Properties</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture03.pdf">Slides</a>;
+	    Read Ch. 3 of AMP (you may skip Sec. 3.6);  <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw03.pdf">Homework 3</a>;  <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw03.pdf">Sample
+	    solution</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">4</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">02/17</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">No class (Presidents Day)</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">5</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">02/24</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Spin Locks: TASLock, TTASLock, CLHLock, MCSLock</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture04.pdf">Slides</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/spinlocks.zip">Code</a>;
+	    Read App. B and Ch. 7 of AMP (you may skip Sec. 7.7 and
+	    7.8); <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw04.pdf">Homework 4</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw04.pdf">Sample
+	    solution</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">6</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">03/03</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Monitors and Blocking Synchronization</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture05.pdf">Slides</a>;
+	    Read Ch. 8 of AMP; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw05.pdf">Homework
+	    5</a>; Sample
+	    solution: <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw05.pdf">PDF</a>
+	    and <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw05.zip">source code</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">7</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">03/10</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Synchronization of Concurrent Objects:
+	    coarse-grained, fine-grained, optimistic, lazy, lock-free</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture06.pdf">Slides</a>;
+	    Read Ch. 9 of AMP; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw06.pdf">Homework 6</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw06.pdf">Sample
+	    solution</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">8</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">03/17</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">No class (Spring Recess)</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">9</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">03/24</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Concurrent Queues and Stacks</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	      <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture07.pdf">Slides</a>;
+	      Read Ch. 10 and 11 of
+	      AMP; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw07.pdf">Homework 7</a>; Sample
+	    solution: <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw07.pdf">PDF</a>
+	    and <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw07.zip">source code</a>
+	    </td>
+	    
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">10</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">03/31</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Transactional Memories; Intro to Scala</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	      <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture08.pdf">Slides</a>;  <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture08-scala.pdf">Scala Intro</a>;
+	      Read Ch. 18 of AMP
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">11</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">04/07</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Scala STM; Hardware
+	    Transactional Memories</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	      <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture09.pdf">Slides</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw08.pdf">Homework
+	      8</a>;  Sample solution: <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/sol-hw08.pdf">PDF</a>
+	    and <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/EliminationStack.scala">source code</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">12</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">04/14</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Actors; Intro to Akka</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top">
+	      <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture10.pdf">Slides</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/bankaccount.zip">Bank
+	      account code</a>; <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/linkchecker.zip">Link checker code</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">13</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">04/21</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Intro to Akka</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top"> <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/hw09.pdf">Homework 9</a>;
+              <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/actortree.zip">Scala templates</a>;
+              <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/BinaryTreeSet.scala">Sample Solution</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">14</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">04/28</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Concurrent Merge Sort with Actors</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top"> 
+              <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/mergesort.zip">Scala code</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">15</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">05/05</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Failure Handling with Actors; Project Presentations</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top"> 
+              <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/lecture13.pdf">Slides</a>
+	    </td>
+	  </tr>
+          <tr>
+	    <td style="background-color:#D4D4F0;padding:2px;" align="center">16</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">05/12</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="center">Project Presentations</td>
+	    <td style="background-color:#D4D4F0;padding:2px;" valign="top"> 
+	    </td>
+	  </tr>
+	</tbody></table>
+
+
+	<h1>Mailing List</h1>
+
+	<p class="bodytext">
+	  All course-related announcements will be sent to the
+	  <a href="http://www.cs.nyu.edu/mailman/listinfo/csci_ga_3033_014_sp14">course
+	  mailing list</a>. You may also use this list to ask
+	  questions and discuss issues related to the course. If you
+	  have enrolled before the start of the term, you are
+	  automatically subscribed to the list. Otherwise, use the above
+	  link to subscribe manually.
+	</p>
+
+	<h1>Grading</h1>
+
+	<p class="bodytext">Homework (30%), project (30%), final exam (40%).</p> 
+
+        <h1>Projects</h1>
+        
+        <p class="bodytext">
+        You may either choose from <a href="http://cs.nyu.edu/wies/teaching/ppc-14/material/projects.pdf">one of the
+        projects that I have suggested</a> or define your own
+        project. Your project may either be seminar-based or
+        implementation-based. For the seminar-based projects you will
+        survey a set of coherent research papers. For the
+        implementation-based projects you will solve a specific
+        problem related to concurrent programming in a group of up to
+        two students. In both cases you
+        will write a short report (6 pages for seminar-based projects
+        and 4 pages for implementation-based projects), and present
+        your project at the end of the semester. 
+        </p>
+
+        Seminar topics include:
+        <ul>
+          <li>Automatic bug detection and localization in concurrent programs:
+            <ul>
+              <li><a href="http://doi.acm.org/10.1145/1250734.1250785">Iterative context bounding for systematic testing of multithreaded programs</a>
+              </li><li><a href="http://www.usenix.org/events/osdi08/tech/full_papers/musuvathi/musuvathi.pdf">Finding
+              and Reproducing Heisenbugs in Concurrent
+              Programs</a></li>
+              <li><a href="http://dl.acm.org/citation.cfm?id=1806838">Falcon: fault localization in concurrent programs</a></li>            </ul>
+          </li>
+          <li>Automatic parallelization:
+            <ul>
+            </ul>
+          </li>
+          <li>Software Transactional memory:
+            <ul>
+              <li><a href="http://link.springer.com/article/10.1007/s004460050028">Software Transactional Memory</a></li>
+              <li><a href="http://dl.acm.org/citation.cfm?id=1345233">On the correctness of transactional memory</a></li>
+              <li><a href="http://dl.acm.org/citation.cfm?id=1810531">TLRW: return of the read-write lock</a></li>
+            </ul>
+          </li>
+          <li>Concurrent Data Structures:
+            <ul>
+              <li>AMP Chapter 15</li>
+              <li><a href="http://www.sciencedirect.com/science/article/pii/S0020019096001482">An
+              efficient algorithm for concurrent priority queue
+              heaps</a></li>
+              <li><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1213189">Fast
+              and lock-free concurrent priority queues for
+              multi-thread systems</a>
+            </li></ul>
+          </li>
+          <li>Data Parallelism and Cloud Computing:
+            <ul>
+              <li><a href="http://dl.acm.org/citation.cfm?id=1327492">MapReduce: simplified data processing on large
+              clusters</a></li>
+              <li><a href="http://dl.acm.org/citation.cfm?id=1273005">Dryad:
+              distributed data-parallel programs from sequential
+              building blocks</a></li>
+              <li><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5496972&amp;tag=1">The Hadoop Distributed File System</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        Important Dates:
+        <table style="margin-bottom:1ex">	
+	<tbody><tr>
+	  <td width="150"><b>Choose project</b></td><td>March 28</td>
+	</tr>
+	<tr>
+	  <td width="150"><b>Presentations</b></td><td>May 5
+	  and May 12</td>
+	</tr>
+        <tr>
+	  <td width="150"><b>Final reports due</b></td><td>May 19</td>
+	</tr>
+        </tbody></table>
+
+	<h1>Academic Integrity</h1>
+
+	<p class="bodytext">
+	  Please review
+	  the <a href="http://www.cs.nyu.edu/web/Academic/Graduate/academic_integrity.html">
+	  departmental academic integrity policy</a>. In this course,
+	  you may discuss homework problems and assignments with other
+	  students, but the work you turn in must be your own. Do not
+	  copy another student's work. Also, you should consult the
+	  instructor before using materials or code other than that
+	  provided in class. Copying code or other work without giving
+	  appropriate acknowledgment is a serious offense with
+	  consequences ranging from no credit to potential expulsion.
+	</p>	
+	
+      </div>
+    </div>		
+    <div id="sidebar" style="width:200px;height:100%">
+      <div class="sidebar-inner" style="padding-top:14px">
+	<div style="text-align:center;margin-bottom:10px"><img src="Programming%20Paradigms%20for%20Concurrency_files/fail.htm" alt="" height="119" width="180"></div>
+
+	
+	<h2>Quick Links</h2>
+	
+        
+	<p class="bodytext">
+	  <!--<a href="#material"
+	  title="Opens internal link in current window"
+	  class="internal-link">Course Material</a><br/>
+	  <a href="#project"
+	  title="Opens internal link in current window"
+	  class="internal-link">Programming Project</a><br/>-->
+	 <a href="http://cs.nyu.edu/wies" title="Opens internal link in current window" class="internal-link">Instructor's web page</a><br>
+	  <a href="http://cs.nyu.edu/webapps/spring2014/courses" title="Opens internal link in current window" class="internal-link">CS Spring 2014 Courses</a><br>
+	</p>
+
+	<!--
+	<h2>Contact</h2>
+	
+	<p class="bodytext">
+	  <strong>Address</strong><br/>
+	  251 Mercer Street, Room 407<br/>
+	  New York, NY 10012<br/>
+	  <strong>E-Mail</strong> 
+	  <em>lastname</em>@cs.nyu.edu<br/>
+	  <strong>Phone</strong>
+	  +1 (212) 998 3293<br/>
+	  <strong>Fax</strong>
+	  +1 (212) 995 4121<br/>
+	</p>-->
+
+      </div>
+
+    </div>
+  </div>	
+
+
+</body></html>
