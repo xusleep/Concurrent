@@ -1,8 +1,10 @@
 package zhonglin.test.io.nio;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -10,15 +12,13 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import zhonglin.test.io.nio.Reactor.Acceptor;
-
-public class ServerSide implements Runnable {
+public class FileServerSide implements Runnable {
 	private static final AtomicInteger count = new AtomicInteger(0);
 	private ServerSocketChannel serverSocketChannel = null;  
 	  
     private Selector            selector            = null;  
   
-    public ServerSide() {  
+    public FileServerSide() {  
         try {  
             selector = Selector.open();  
             serverSocketChannel = ServerSocketChannel.open();  
@@ -50,27 +50,21 @@ public class ServerSide implements Runnable {
         				sc.register(this.selector, SelectionKey.OP_READ);
                     }
                     else if(key.isReadable()){
-                    	String content = "Hello World! count = " + count.incrementAndGet(); 
+                    	System.out.println("reading...");
+                    	FileOutputStream fos = new FileOutputStream("E:\\Storage\\1.msi");
+                    	FileChannel fileChannel = fos.getChannel();
                     	final SocketChannel sc = (SocketChannel)key.channel();
-                        ByteBuffer buffer = ByteBuffer.allocate(1024);  
-                        sc.read(buffer);  
-                        System.out.println("接收到来自客户端（" + sc.socket().getInetAddress().getHostAddress()  
-                                           + "）的消息：" + new String(buffer.array(), "UTF-8"));
+                    	long readCount = fileChannel.transferFrom(sc, 0, 1024 * 4);
+                    	long totalCount = readCount;
+                    	while(readCount >= 0){
+                    		readCount = fileChannel.transferFrom(sc, totalCount, 1024 * 4);
+                    		totalCount = totalCount + readCount;
+                    		if(255557632 == totalCount)
+                    			break;
+                    	}
+                    	fileChannel.close();
+                        fos.close();
                         key.cancel();
-                        new Thread(new Runnable(){
-
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								try {
-									write(sc);
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-                        	
-                        }).start();
                     }
                 }  
             } catch (IOException e) {  
@@ -93,6 +87,6 @@ public class ServerSide implements Runnable {
         sc.close();
     }  
     public static void main(String[] args) {  
-        new Thread(new ServerSide()).start();  
+        new Thread(new FileServerSide()).start();  
     }  
 }
